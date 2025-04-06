@@ -35,9 +35,9 @@ type Song = {
 function App() {
 	const [musicInfo, setMusicInfo] = useState<Song>();
 	const audioRef = useRef<HTMLAudioElement | null>(null);
+	const [isPlaying, setIsPlaying] = useState(false);
 
 	const songArr: Song[] = [];
-	console.log("playlists", typeof playlists);
 	const playlistArr: Playlist[] = playlists.playlists;
 	playlistArr.map((list: Playlist) => {
 		list.tracks.map((song: Track, index: number) => {
@@ -53,48 +53,51 @@ function App() {
 		});
 	});
 
-	const playButton = document.getElementById("playButton");
-	const nextButton = document.getElementById("nextButton");
-	// const previousButton = document.getElementById("previousButton");
-	// const pauseButton = document.getElementById("pauseButton");
-	// const stopButton = document.getElementById("stopButton");
-	// const shuffleButton = document.getElementById("shuffleButton");
-
-	// if (!playButton) {
-	// 	return;
-	// }
-	// if (!nextButton) {
-	// 	return;
-	// }
+	const firstSong = songArr[0];
 
 	const playAudio = () => {
 		if (audioRef?.current) {
 			audioRef.current.pause();
 		}
+
 		if (!musicInfo) {
 			setMusicInfo(songArr[0]);
-			audioRef.current = new Audio(songArr[0].url);
-			audioRef.current.play();
+			audioRef.current = new Audio(firstSong.url);
+			audioRef.current
+				.play()
+				.then(() => {
+					setIsPlaying(true);
+				})
+				.catch((err) => console.error("Play error:", err));
 			return;
 		}
 
 		audioRef.current = new Audio(musicInfo?.url);
-		audioRef.current.play();
+		audioRef.current
+			.play()
+			.then(() => {
+				setIsPlaying(true);
+			})
+			.catch((err) => console.error("Play error:", err));
 	};
 
 	const pauseAudio = () => {
+		setIsPlaying(false);
 		if (audioRef?.current) {
 			audioRef.current.pause();
 		}
 	};
 
 	const stopAudio = () => {
+		setIsPlaying(false);
 		if (audioRef?.current) {
 			audioRef.current.pause();
 			audioRef.current.currentTime = 0;
+			audioRef.current = null;
 		}
 	};
 	const shuffleAudio = () => {
+		setIsPlaying(true);
 		if (audioRef?.current) {
 			audioRef.current.pause();
 		}
@@ -106,21 +109,29 @@ function App() {
 	};
 
 	const nextSong = () => {
-		if (!musicInfo) {
-			return;
-		}
+		if (!musicInfo) return;
+
 		const currentIndex = songArr.findIndex((song) => song.id === musicInfo?.id);
 		const nextIndex = (currentIndex + 1) % songArr.length;
 		const nextSong = songArr[nextIndex];
+
 		if (audioRef.current) {
 			audioRef.current.pause();
 		}
+
 		audioRef.current = new Audio(nextSong.url);
-		audioRef.current.play();
+		audioRef.current
+			.play()
+			.then(() => {
+				setIsPlaying(true);
+			})
+			.catch((err) => console.error("Play error:", err));
+
 		setMusicInfo(nextSong);
 	};
 
 	const prevSong = () => {
+		setIsPlaying(true);
 		if (!musicInfo) {
 			return;
 		}
@@ -135,11 +146,7 @@ function App() {
 		setMusicInfo(prevSong);
 	};
 
-	playButton?.addEventListener("click", () => {
-		const audio = new Audio(songArr[0].url);
-		audio.play();
-		setMusicInfo(songArr[0]);
-	});
+	console.log(audioRef.current);
 
 	return (
 		<div id="mainContainer">
@@ -165,7 +172,7 @@ function App() {
 						onKeyDown={(e) => e.key === "ArrowLeft" && prevSong()}
 						className="unstyled-button"
 					>
-						<ArrowBigLeftIcon size="15rem" />
+						<ArrowBigLeftIcon className="icon-size" />
 					</button>
 					<button
 						type="button"
@@ -174,7 +181,10 @@ function App() {
 						onKeyDown={(e) => e.key === " " && playAudio()}
 						className="unstyled-button"
 					>
-						<PlayCircleIcon size="15rem" />
+						<PlayCircleIcon
+							color={isPlaying ? "greenyellow" : "white"}
+							className="icon-size"
+						/>
 					</button>
 					<button
 						type="button"
@@ -183,7 +193,7 @@ function App() {
 						onKeyDown={(e) => e.key === "ArrowRight" && nextSong()}
 						className="unstyled-button"
 					>
-						<ArrowBigRightIcon size="15rem" />
+						<ArrowBigRightIcon className="icon-size" />
 					</button>
 				</div>
 				<div id="extraControls" className="flex">

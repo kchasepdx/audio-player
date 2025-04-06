@@ -3,6 +3,10 @@ body {
 	color: white;
 }
 
+svg {
+	pointer-events: none;
+}
+
 .boldonse-regular {
 	font-family: "Boldonse", system-ui;
 	font-weight: 400;
@@ -24,7 +28,6 @@ body {
 
 #mainContainer {
 	display: block;
-
 	height: 100vh;
 }
 
@@ -37,14 +40,18 @@ body {
 
 #controlsDiv {
 	margin: 0 auto;
-	width: 40rem;
+	width: 36rem;
+}
+#controlsDiv button:hover {
+	color: greenyellow;
 }
 #basicControls {
 	margin: 0 auto;
+	width: 36rem;
 }
 #extraControls {
 	margin: 5rem auto;
-	width: 27rem;
+	width: 36rem;
 	opacity: 80%;
 	padding: 20px;
 }
@@ -52,4 +59,42 @@ body {
 #extraControls button {
 	margin-left: 2rem;
 	margin-right: 2rem;
+}
+
+.icon-size {
+	width: 10rem;
+	height: 10rem;
+}
+
+@media screen and (max-width: 800px) {
+	#controlsDiv {
+		width: 100%;
+	}
+	#extraControls {
+		width: 50%;
+	}
+	#extraControls button {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+}
+
+@media screen and (max-width: 430px) {
+	#controlsDiv {
+		width: 100%;
+	}
+	#basicControls {
+		width: 24rem;
+	}
+	#extraControls {
+		width: 79%;
+	}
+	#extraControls button {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+	.icon-size {
+		width: 8rem;
+		height: 8rem;
+	}
 }
