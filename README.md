@@ -1,3 +1,8 @@
+
+![Kristen's Media Player](image.png)
+
+
+
 # Linear Media Player
 
 Hey, thanks for taking the time to work on this exercise. We're excited to see what you come up with –
