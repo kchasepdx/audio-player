@@ -9,16 +9,6 @@ npm install
 npm run dev
 ```
 
-### Requirements
-
-We'd like to see a working media player that can play through a playlist of audio files (included), display info on the
-currently playing track and supporting basic functionality like play/pause, next track, etc. Beyond that, feel free to get
-creative with the design and functionality.
-
-Plan on spending 2-4 hours to complete this exercise.
-
-Please update this README to include a screenshot of the completed exercise at the top.
-
 ### Playlist data
 
 The playlist data is stored in `src/data/playlists.json`. It includes a list of audio files and some associated metadata,
